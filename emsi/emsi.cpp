@@ -7,19 +7,18 @@
 #include <map>
 #include <vector>
 
-int main()
-{
 
-}
+
 class console {
-    void readConsole() {
+    int readConsole(int argc, char *argv[]) {
         if (argc < 5) {
             std::cout << "Four arguments are expected, you have entered: " << argc << std::endl;
         }
         for (int i = 0; i < (argc - 1); i++) {
-            if (argv[i].find(".csv") = std::string::npos) || if (argv[i].find(".log") = std::string::npos) {
+            std::string currentArgument(argv[i]);
+            if (currentArgument.find(".csv") == std::string::npos || currentArgument.find(".log") == std::string::npos) {
                 std::cout << "Entered files are missing appropriate file extensions" << std::endl;
-                return -1
+                return -1;
             }
             else {
                 std::string reportFileName = argv[0];
@@ -40,6 +39,8 @@ class fileReadWrite {
     };
 */
     void readFile() {
+        //computing skills file open and enter into map
+        std::string reportFileName = "computingSkills.csv";
         std::ifstream computingSkillsFile;
         std::string jobTitle;
         std::string jobNums;
@@ -49,7 +50,25 @@ class fileReadWrite {
             try {
                 while (getline(computingSkillsFile, jobTitle, ',')) {
                     getline(computingSkillsFile, jobNums, '\n');
-                    jobs.insert(std::pair<std::string, int>(jobTitle, std::stoi(jobNums));
+                    jobs.insert(std::pair<std::string, int>(jobTitle, std::stoi(jobNums)));
+                }
+            }
+            catch (...) {
+                std::cout << "Error with data file" << std::endl;
+            }
+        }
+        //skills against file open and enter into map
+        std::string crossMatchFileName = "SkillsAgainstCategory.csv";
+        std::ifstream skillsAgainstFile;
+        std::string jobName;
+        std::string jobCategory;
+        std::map<std::string, std::string> categories;
+        skillsAgainstFile.open(crossMatchFileName);
+        if (skillsAgainstFile.is_open() && skillsAgainstFile.good()) {
+            try {
+                while (getline(skillsAgainstFile, jobName, ',')) {
+                    getline(skillsAgainstFile, jobCategory, '\n');
+                    categories.insert(std::pair<std::string, std::string>(jobName, jobCategory));
                 }
             }
             catch (...) {
@@ -57,11 +76,23 @@ class fileReadWrite {
             }
         }
     }
+    /*
     void writeFile() {
 
     }
-};
+};*/
+
 class analysis {
+    // job title and number into categories // category = ((jobtitle1 = amount) + (jobtitle2 = amount))
+    //iterate through both maps to find common job titles, where job title are common add job value to job category
+    // iterate through categories 1st to find potential categories, then through jobs to find totals
+    //search for job names in job categories, return posiotn of job name if match and add number to category
+    // this is janky placeholder just for thinking
+    std::map<std::string, int> analysedJobs;
+    void analyseJobs(categories, jobs) {
+        for (int i = 0; i < (categories.size()); i++) {
+            
+    }
 
 };
 class IOutput {
@@ -76,6 +107,9 @@ class convertToSVG : IOutput {
 class convertToCSV : IOutput {
 
 };
+int main() {
+    
+}
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
